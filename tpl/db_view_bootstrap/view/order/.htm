@@ -1,0 +1,29 @@
+<div class="dropdown pull-right">
+  <input type="hidden" name="<?p($paramName)?>" value="<?p($currentOptionName)?>">
+  <input type="hidden" name="<?p($directionParamName)?>" value="<?p($isDesc)?>">
+  <button class="btn dropdown-toggle btn-sm" type="button" data-toggle="dropdown" style="margin-right: 4px;">
+    Order - <?p($currentOptionTitle)?>
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+<?
+  for ($i = 0, $l = count($options); $i < $l; $i++)
+  {
+    $lTitle = $options[$i]['title'];
+    $lIsActive = $options[$i]['isActive'];
+    $lUrlParams = $urlParams.($urlParams ? '&' : '');
+    $lOrderParams = $paramName.'='.$options[$i]['name'];
+    $lDirectionParams = '&'.$directionParamName.'=true';
+
+    p(
+      '<li '.($lIsActive && !$isDesc ? 'class="disabled"' : '').
+      '><a class="dropup" tabindex="-1" href="?'.$lUrlParams.$lOrderParams.'">'.$lTitle.
+      '<span class="caret"></span></a></li>'.
+      '<li '.($lIsActive && $isDesc ? 'class="disabled"' : '').
+      '><a tabindex="-1" href="?'.$lUrlParams.$lOrderParams.$lDirectionParams.'">'.$lTitle.
+      '<span class="caret"></span></a></li>'
+    );
+  }
+?>
+  </ul>
+</div>
