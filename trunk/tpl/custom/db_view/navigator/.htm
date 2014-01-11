@@ -1,0 +1,53 @@
+<div class="blocks_navigator-container">
+  <table class="blocks_navigator" cellspacing="2" cellpadding="2">
+    <tr>
+<?
+  $lItems = cPageNavigatorHelper::navigatorCalculate($recordCount,
+    $currentOptionValue, $pageNo, $pageNoParamName, $paramName,
+    $currentOptionName, $urlParams, 2);
+
+  for ($i = 0, $l = count($lItems); $i < $l; $i++)
+  {
+    $lItem = $lItems[$i];
+
+    switch ($lItem['navigatorItemType']) {
+    case cPageNavigatorHelper::NIT_FIRST:
+      $lTitle = '<~ml|First~>';
+      break;
+    case cPageNavigatorHelper::NIT_PREV:
+      $lTitle = '<~ml|Prev~>';
+      break;
+    case cPageNavigatorHelper::NIT_PAGE:
+      $lTitle = $lItem['pageNo'];
+      break;
+    case cPageNavigatorHelper::NIT_NEXT:
+      $lTitle = '<~ml|Next~>';
+      break;
+    case cPageNavigatorHelper::NIT_LAST:
+      $lTitle = '<~ml|Last~>';
+      break;
+    default:
+      throw new Exception('Not supported NavigatorItemType: "'.
+        $lItem['navigatorItemType'].'"');
+    }
+
+    p('<td>');
+    if ($lItem['isActive'])
+    {
+?>
+      <span class="blocks_db_view-filter_item_active"><?p($lTitle)?></span>
+<?
+    }
+    else
+    {
+?>
+    <a href="?<?p($lItem['urlParams'])?>
+      "class="blocks_db_view-filter_item"><?p($lTitle)?></a>
+<?
+    }
+    p('</td>');
+  }
+?>
+    </tr>
+  </table>
+</div>

@@ -1,0 +1,22 @@
+<div class="blocks_limit-container">
+  <span class="blocks_db_view-filter_item"><~ml|ProdutsOnPage~>:
+    <select class="blocks_limit-items" name="<?p($paramName)?>"
+      onchange="this.form.submit()">
+<?
+  for ($i = 0, $l = count($options); $i < $l; $i++)
+  {
+    $lOption = $options[$i];
+    p('<option '.
+      (($lOption['name'] == $currentOptionName) ? 'selected="selected"' : '').
+      ' value="'.$lOption['name'].'">'.$lOption['title'].'</option>');
+  }
+?>
+    </select>
+  </span>
+  <?
+    $lLimitTo = $currentOptionValue * $pageNo;
+  ?>
+    <span class="blocks_db_view-filter_item">
+      <?p('<~ml|Visible~>: '.($lLimitTo - $currentOptionValue + 1).'-'.$lLimitTo.
+      ' <~ml|From~> '.$recordCount)?></span>
+</div>

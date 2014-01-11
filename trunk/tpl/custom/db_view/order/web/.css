@@ -1,0 +1,28 @@
+.blocks_order-title {
+  color: black;
+  font-family: Arial,Helvetica,sans-serif;
+  font-size: 14px;
+}
+.blocks_order-items {
+  background-color: #F8F8F8;
+  border: 1px solid lightGrey;
+  border-radius: 2px;
+  color: #333333;
+  font-size: 12px;
+  font-weight: bold;
+  height: 20px;
+}
+.blocks_order-items:hover {
+  border-color: #C6C6C6;
+}
+.blocks_order-direction_element {
+  display: inline-block;
+  font-size: 18px;
+  position: relative;
+  text-decoration: none;
+  width: 12px;
+}
+.blocks_order-direction_asc {
+}
+.blocks_order-direction_desc {
+}

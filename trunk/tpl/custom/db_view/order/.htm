@@ -1,0 +1,23 @@
+<span class="blocks_db_view-filter_item"><~ml|SortBy~>:
+  <select name="<?p($paramName)?>" class="blocks_order-items"
+    onchange="this.form.submit()">
+  <?
+    p('<option value=""><~ml|Select~>...</option>');
+    for ($i = 0, $l = count($options); $i < $l; $i++)
+    {
+      $lOption = $options[$i];
+      p('<option '.
+        (($lOption['name'] == $currentOptionName) ? 'selected="selected"' : '').
+        ' value="'.$lOption['name'].'">'.$lOption['title'].'</option>');
+    }
+  ?>
+  </select>
+  <a href="?<?p($urlParams.'&'.
+    $paramName.'='.$currentOptionName.'&'.
+    $directionParamName.'='.($isDesc ? 'false' : 'true'))?>"
+    class="blocks_order-direction_element blocks_order-direction_<?
+    p($isDesc ? 'desc' : 'asc')?>"
+    title="<~ml|SortedBy~> <?p($isDesc ? '<~ml|Desc~>' : '<~ml|Asc~>')?>">
+    <?p($isDesc ? '&darr;' : '&uarr;')?>
+  </a>
+</span>

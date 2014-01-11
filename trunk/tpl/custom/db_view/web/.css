@@ -1,0 +1,25 @@
+.blocks_db_view-filter_item, .blocks_db_view-filter_item_active {
+  background-color: #F8F8F8;
+  background-image: linear-gradient(to bottom, #FCFCFC 0px, #F8F8F8 100%);
+  border: 1px solid lightGrey;
+  border-radius: 2px;
+  color: #333333;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 2px;
+  padding: 5px 10px;
+  text-decoration: none;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition: all 0s ease-in 0s !important;
+  vertical-align: middle;
+}
+.blocks_db_view-filter_item:hover {
+  background-image: linear-gradient(to bottom, #F8F8F8 0px, #EEEEEE 100%);
+  border-color: #C6C6C6;
+}
+.blocks_db_view-filter_item_active {
+  background-color: #E9E9E9;
+  background-image: none;
+  border-color: #C6C6C6;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2) inset;
+}
