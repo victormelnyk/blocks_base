@@ -1,0 +1,16 @@
+.blocks_limit-container {
+  color: black;
+  text-align: center;
+}
+.blocks_limit-items {
+  background-color: #F8F8F8;
+  border: 1px solid lightGrey;
+  border-radius: 2px;
+  color: #333333;
+  font-size: 12px;
+  font-weight: bold;
+  height: 20px;
+}
+.blocks_order-items:hover {
+  border-color: #C6C6C6;
+}

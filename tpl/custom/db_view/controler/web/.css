@@ -1,0 +1,14 @@
+.blocks_controler {
+  width: 100%;
+}
+.blocks_controler-order {
+  text-align: left;
+  width: 250px;
+}
+.blocks_controler-navigator {
+  text-align: right;
+}
+.blocks_controler-limit {
+  text-align: right;
+  width: 320px;
+}

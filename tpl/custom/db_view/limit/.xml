@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Block>
+  <Localization>
+    <Tags>
+      <ProdutsOnPage>
+        <en>produts on page</en>
+        <uk>продуктів на сторінці</uk>
+        <ru>продуктов на странице</ru>
+      </ProdutsOnPage>
+      <Visible>
+        <en>visible</en>
+        <uk>показано</uk>
+        <ru>показано</ru>
+      </Visible>
+      <From>
+        <en>from</en>
+        <uk>з</uk>
+        <ru>из</ru>
+      </From>
+    </Tags>
+  </Localization>
+</Block>
