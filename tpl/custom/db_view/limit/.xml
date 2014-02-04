@@ -3,9 +3,9 @@
   <Localization>
     <Tags>
       <ProdutsOnPage>
-        <en>produts on page</en>
-        <uk>продуктів на сторінці</uk>
-        <ru>продуктов на странице</ru>
+        <en>on page</en>
+        <uk>на сторінці</uk>
+        <ru>на странице</ru>
       </ProdutsOnPage>
       <Visible>
         <en>visible</en>
