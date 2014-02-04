@@ -10,21 +10,27 @@
   {
     $lItem = $lItems[$i];
 
+    $lValue = '';
+    $lTitle = '';
     switch ($lItem['navigatorItemType']) {
     case cPageNavigatorHelper::NIT_FIRST:
-      $lTitle = '<~ml|First~>';
+      $lValue = '<~ml|FirstValue~>';
+      $lTitle = '<~ml|FirstTitle~>';
       break;
     case cPageNavigatorHelper::NIT_PREV:
-      $lTitle = '<~ml|Prev~>';
+      $lValue = '<~ml|PrevValue~>';
+      $lTitle = '<~ml|PrevTitle~>';
       break;
     case cPageNavigatorHelper::NIT_PAGE:
-      $lTitle = $lItem['pageNo'];
+      $lValue = $lItem['pageNo'];
       break;
     case cPageNavigatorHelper::NIT_NEXT:
-      $lTitle = '<~ml|Next~>';
+      $lValue = '<~ml|NextValue~>';
+      $lTitle = '<~ml|NextTitle~>';
       break;
     case cPageNavigatorHelper::NIT_LAST:
-      $lTitle = '<~ml|Last~>';
+      $lValue = '<~ml|LastValue~>';
+      $lTitle = '<~ml|LastTitle~>';
       break;
     default:
       throw new Exception('Not supported NavigatorItemType: "'.
@@ -35,14 +41,15 @@
     if ($lItem['isActive'])
     {
 ?>
-      <span class="blocks_db_view-filter_item_active"><?p($lTitle)?></span>
+      <span class="blocks_db_view-filter_item_active" title="<?p($lTitle)?>"><?p($lValue)?></span>
 <?
     }
     else
     {
 ?>
-    <a href="?<?p($lItem['urlParams'])?>
-      "class="blocks_db_view-filter_item"><?p($lTitle)?></a>
+    <a href="?<?p($lItem['urlParams'])?>"
+      <?p($lTitle != '' ? 'title="' . $lTitle . '"' : '')?>
+      class="blocks_db_view-filter_item"><?p($lValue)?></a>
 <?
     }
     p('</td>');

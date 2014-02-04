@@ -2,26 +2,46 @@
 <Block>
   <Localization>
     <Tags>
-      <First>
+      <FirstValue>
         <en>«« First</en>
         <uk>«« Перша</uk>
         <ru>«« Первая</ru>
-      </First>
-      <Prev>
+      </FirstValue>
+      <FirstTitle>
+        <en>First</en>
+        <uk>Перша</uk>
+        <ru>Первая</ru>
+      </FirstTitle>
+      <PrevValue>
         <en>« Prev</en>
         <uk>« Попередня</uk>
         <ru>« Предыдущая</ru>
-      </Prev>
-      <Next>
+      </PrevValue>
+      <PrevTitle>
+        <en>Prev</en>
+        <uk>Попередня</uk>
+        <ru>Предыдущая</ru>
+      </PrevTitle>
+      <NextValue>
         <en>Next »</en>
         <uk>Наступна »</uk>
         <ru>Следущая »</ru>
-      </Next>
-      <Last>
+      </NextValue>
+      <NextTitle>
+        <en>Next</en>
+        <uk>Наступна</uk>
+        <ru>Следущая</ru>
+      </NextTitle>
+      <LastValue>
         <en>Last »»</en>
         <uk>Остання »»</uk>
         <ru>Последняя »»</ru>
-      </Last>
+      </LastValue>
+      <LastTitle>
+        <en>Last</en>
+        <uk>Остання</uk>
+        <ru>Последняя</ru>
+      </LastTitle>
     </Tags>
   </Localization>
 </Block>

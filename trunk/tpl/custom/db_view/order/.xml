@@ -4,7 +4,7 @@
     <Tags>
       <SortBy>
         <en>Sort by</en>
-        <uk>Сортувати за</uk>
+        <uk>Сортувати по</uk>
         <ru>Сортировать по</ru>
       </SortBy>
       <Select>
@@ -14,7 +14,7 @@
       </Select>
       <SortedBy>
         <en>Sorted by</en>
-        <uk>Посортовано за</uk>
+        <uk>Посортовано по</uk>
         <ru>Сортировано по</ru>
       </SortedBy>
       <Asc>
