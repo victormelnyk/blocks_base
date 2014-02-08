@@ -1,0 +1,21 @@
+.table thead > tr > th,
+.table tbody > tr > th,
+.table tfoot > tr > th,
+.table thead > tr > td,
+.table tbody > tr > td,
+.table tfoot > tr > td {
+  vertical-align: middle;
+}
+/*common classes*/
+.view_table-cell_center {
+  text-align: center !important;
+}
+.view_table-cell_right {
+  text-align: right !important;
+}
+.view_table-edit_btn {
+  margin-right: 6px;
+}
+.view_table-edit_btn:last-child {
+  margin-right: 0;
+}
