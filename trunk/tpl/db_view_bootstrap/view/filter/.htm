@@ -27,6 +27,14 @@
             <div class="col-sm-8">
 <?
     switch ($lInputType) {
+      case INPUT_TYPE_CHECKBOX:
+?>
+          <input id="<?p($lName)?>" class="form-control"
+            type="<?p($lInputType)?>"
+            name="<?p($lName)?>" value="true"<?p($lOption['value'] ? ' checked' : '')?>
+            placeholder="<?p($lOption['title'])?>">
+<?
+        break;
       case INPUT_TYPE_DATE:
         switch ($lOptionType) {
           case cFilter::FILTER_OPTION_TYPE_EQUAL:

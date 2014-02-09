@@ -13,14 +13,13 @@
     $lIsActive = $options[$i]['isActive'];
     $lUrlParams = $urlParams.($urlParams ? '&' : '');
     $lOrderParams = $paramName.'='.$options[$i]['name'];
-    $lDirectionParams = '&'.$directionParamName.'=true';
 
     p(
       '<li '.($lIsActive && !$isDesc ? 'class="disabled"' : '').
-      '><a class="dropup" tabindex="-1" href="?'.$lUrlParams.$lOrderParams.'">'.$lTitle.
+      '><a class="dropup" tabindex="-1" href="?'.$lUrlParams.$lOrderParams.'&'.$directionParamName.'=false">'.$lTitle.
       '<span class="caret"></span></a></li>'.
       '<li '.($lIsActive && $isDesc ? 'class="disabled"' : '').
-      '><a tabindex="-1" href="?'.$lUrlParams.$lOrderParams.$lDirectionParams.'">'.$lTitle.
+      '><a tabindex="-1" href="?'.$lUrlParams.$lOrderParams.'&'.$directionParamName.'=true">'.$lTitle.
       '<span class="caret"></span></a></li>'
     );
   }
