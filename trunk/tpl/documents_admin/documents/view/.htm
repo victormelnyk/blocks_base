@@ -1,0 +1,30 @@
+<?
+  $lCallbackUrl = urlencode($params['ViewPageUrl'].'?'.$urlParams);
+  $lRows = array();
+
+  for ($i = 0, $l = count($recordset); $i < $l; $i++)
+  {
+    $lRecord = $recordset[$i];
+    $lRows[] =
+      '<tr>'.
+        '<td class="view-field_id">'.$lRecord['document_id'].'</td>'.
+        '<td>'.$lRecord['document_name'].'</td>'.
+        '<td>'.$lRecord['language_code'].'</td>'.
+        '<td class="view_table-cell_center view-field_is_deleted">'.
+          cBootstrapTableHelper::stateCheckBoxBuild($lRecord['is_published'], 'IsPublished').
+          cBootstrapTableHelper::stateCheckBoxBuild($lRecord['is_deleted'], 'IsDeleted').
+        '</td>'.
+        '<td>'.$lRecord['page_title'].'</td>'.
+        '<td>'.$lRecord['date_created'].'</td>'.
+        '<td class="view-field_edit">'.
+        '<a class="btn btn-success view_table-edit_btn" href="'.
+          $params['EditPageUrl'].'?'.$lRecord['key_params'].
+          '&callback_url='.$lCallbackUrl.'" title="Document Edit">'.
+          '<span class="glyphicon glyphicon-edit"></span></a>'.
+        '</td>'.
+      '</tr>';
+  }
+
+  p(cBootstrapTableHelper::gridBuildByRows($lRows, array(
+    'DocID', 'Name', 'Lang', 'State', 'PageTitle', 'Date Edit', 'Edit')));
+?>

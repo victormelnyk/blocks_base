@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Block>
+  <Settings>
+    <Filter>
+      <document_id
+        OptionType="Equal"
+        Title="ID"
+        Type="Integer"
+        SqlSource="D.document_id"
+        DefaultValue="0"
+      />
+      <language_id
+        OptionType="Equal"
+        Title="ID"
+        Type="Integer"
+        SqlTemplate="1=1"
+        DefaultValue="1"
+      />
+    </Filter>
+    <Params>
+      <ViewTitle>Document</ViewTitle>
+    </Params>
+  </Settings>
+</Block>
