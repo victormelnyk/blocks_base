@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Block>
+<Settings>
+  <Filter>
+    <document_id
+      OptionType="Equal"
+      Title="DocumentID"
+      Type="Integer"
+      SqlSource="D.document_id"
+      IsKey="true"
+    />
+    <language_id
+      OptionType="Equal"
+      Title="LanguageID"
+      Type="Integer"
+      SqlSource="L.language_id"
+      IsKey="true"
+    />
+  </Filter>
+  <Order>
+    <id
+      Title="ID"
+      SqlSource="D.document_id,L.language_id"
+    />
+    <date_created
+      Title="DateCreated"
+      SqlSource="DE.date_created"
+    />
+  </Order>
+  <Params>
+    <EditPageUrl>document_edit.php</EditPageUrl>
+    <ViewPageUrl>documents.php</ViewPageUrl>
+  </Params>
+</Settings>
+</Block>

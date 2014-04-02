@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page>
+  <Blocks>
+    <form Component="blocks_base.documents.document_edit"/>
+  </Blocks>
+</Page>
