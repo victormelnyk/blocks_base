@@ -1,12 +1,11 @@
 SELECT
   D.document_id,
   L.language_id,
-  L.code language_code,
   D.name document_name,
-  DE.content,
+  L.code language_code,
+  '' state,
   DE.page_title,
-  DE.page_meta,
-  DE.date_created,
+  df.fn_df_timestamp_to_str(DE.date_created) date_created,
   D.is_published,
   D.is_deleted
 FROM doc.doc_documents D
