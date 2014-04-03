@@ -1,19 +1,5 @@
 <?
-  $lCallbackUrl = urlencode($params['ViewPageUrl'].'?'.$urlParams);
-
-  for ($i = 0, $l = count($recordset); $i < $l; $i++)
-  {
-    $recordset[$i]['edit'] =
-      '<a class="btn btn-success btn-sm" href="'.
-        $params['EditPageUrl'].'?'.$recordset[$i]['key_params'].
-        '&callback_url='.$lCallbackUrl.'">Edit</a>';
-
-    $recordset[$i]['delete'] =
-      '<a class="btn btn-danger btn-sm" href="'.
-        $params['EditPageUrl'].'?edit_mode=delete&'.
-        $recordset[$i]['key_params'].'&callback_url='.$lCallbackUrl.
-        '">Delete</a>';
-  }
-
-  p(cBootstrapTableHelper::gridBuild($recordset, $params));
+cBootstrapTableHelper::recordsetAddEditButtons($recordset, $params,
+  $urlParams, true);
+p(cBootstrapTableHelper::gridBuild($recordset, $params));
 ?>
