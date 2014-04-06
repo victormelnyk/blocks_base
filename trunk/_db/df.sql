@@ -32,6 +32,9 @@ CREATE DOMAIN df_timestamp AS timestamp without time zone;
 
 CREATE DOMAIN df_tinyint AS smallint;
 
+CREATE DOMAIN df_tinyint_id AS smallint
+	CONSTRAINT chk_df_tinyint_id CHECK (((VALUE >= 0) OR (VALUE <= 255)));
+
 CREATE FUNCTION fn_df_timestamp_to_str(avalue df_timestamp) RETURNS df_string_short
     LANGUAGE plpgsql
     AS $$

@@ -10,29 +10,86 @@ CREATE SCHEMA doc;
 
 SET search_path = doc, pg_catalog;
 
-CREATE FUNCTION fn_document_new(alang df.df_id, atitle df.df_string_large, acontent df.df_text, apublished df.df_boolean) RETURNS df.df_boolean
+CREATE DOMAIN doc_language_code AS character varying(2) NOT NULL;
+
+CREATE FUNCTION fn_doc_clear() RETURNS void
     LANGUAGE plpgsql
     AS $$
-DECLARE
-  document_id df.df_id;
-    content_id df.df_id;
-    document_edit_id df.df_id;
-    date df.df_timestamp;
-
 BEGIN
-document_id = 1;
-INSERT INTO doc.doc_documents(id, last_edit_id, lang_id, title, published)
-VALUES(document_id, 0, alang, atitle, apublished);
+  DELETE FROM doc.doc_document_last_edits;
+  DELETE FROM doc.doc_document_edits;
+  DELETE FROM doc.doc_documents;
+  --DELETE FROM doc.doc_languages;
+END;
+$$;
 
-content_id = 1;
-INSERT INTO doc.doc_contents(id, content, lang_id)
-VALUES(content_id, acontent, alang);
+CREATE FUNCTION fn_doc_language_id_get(adocument_code df.df_string_short, alanguage_code doc_language_code) RETURNS df.df_tinyint_id
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  RETURN (
+    SELECT L.language_id
+    FROM doc.doc_documents D
+      INNER JOIN doc.doc_languages L
+        ON L.code = alanguage_code
+      INNER JOIN doc.doc_document_last_edits DLE
+        ON  DLE.document_id = D.document_id
+        AND DLE.language_id = L.language_id
+    WHERE D.code = adocument_code
+    UNION ALL
+    SELECT *
+    FROM (
+      SELECT L.language_id
+      FROM doc.doc_documents D
+        INNER JOIN doc.doc_languages L
+          ON TRUE
+        INNER JOIN doc.doc_document_last_edits DLE
+          ON  DLE.document_id = D.document_id
+          AND DLE.language_id = L.language_id
+      WHERE D.code = adocument_code
+      ORDER BY L.lno
+    ) D
+    LIMIT 1);
+END;
+$$;
 
-document_edit_id = 1;
-date = df.fn_df_utc_timestamp();
-INSERT INTO doc.doc_edit(id, lang_id, content_id, date, document_id)
-VALUES(doc_document_edit_id, alang, doc_document_content_id, date, doc_document_id);
+CREATE FUNCTION t_doc_document_edits_ai() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  UPDATE doc.doc_document_last_edits
+  SET last_edit_id  = NEW.edit_id
+  WHERE document_id = NEW.document_id
+    AND language_id = NEW.language_id;
 
+  IF NOT FOUND THEN
+    INSERT INTO doc.doc_document_last_edits (
+      document_id,
+      language_id,
+      last_edit_id)
+     VALUES (
+      NEW.document_id,
+      NEW.language_id,
+      NEW.edit_id);
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+CREATE FUNCTION t_doc_document_edits_bi() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  SELECT COALESCE(MAX(DE.edit_id) + 1, 1)
+  INTO NEW.edit_id
+  FROM doc.doc_document_edits DE
+  WHERE DE.document_id = NEW.document_id
+    AND DE.language_id = NEW.language_id;
+
+  NEW.date_created = df.fn_df_utc_timestamp();
+
+  RETURN NEW;
 END;
 $$;
 
@@ -40,38 +97,16 @@ CREATE FUNCTION t_doc_documents_bi() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 BEGIN
-  SELECT COALESCE(MAX(id) + 1, 1)
-  INTO NEW.id
+  SELECT COALESCE(MAX(document_id) + 1, 1)
+  INTO NEW.document_id
   FROM doc.doc_documents;
 
-  NEW.published = TRUE;
-
-  RETURN NEW;
-END;
-$$;
-
-CREATE FUNCTION t_document_edits_ai() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-  UPDATE doc.doc_document_last_edit
-  SET last_edit_id = NEW.id
-  WHERE document_id = NEW.document_id
-    AND lang_id     = NEW.lang_id;
-END;
-$$;
-
-CREATE FUNCTION t_document_edits_bi() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-  SELECT COALESCE(MAX(DE.id) + 1, 1)
-  INTO NEW.edit_id
-  FROM doc.doc_document_edits DE
-  WHERE DE.document_id = NEW.document_id
-    AND DE.lang_id     = NEW.lang_id;
+  IF NEW.is_published IS NULL THEN
+    NEW.is_published = FALSE;
+  END IF;
 
   NEW.date_created = df.fn_df_utc_timestamp();
+  NEW.is_deleted = FALSE;
 
   RETURN NEW;
 END;
@@ -83,76 +118,76 @@ SET default_with_oids = false;
 
 CREATE TABLE doc_document_edits (
     document_id df.df_id NOT NULL,
-    lang_id df.df_id NOT NULL,
+    language_id df.df_tinyint_id NOT NULL,
     edit_id df.df_id NOT NULL,
     content df.df_text NOT NULL,
-    date_created df.df_timestamp NOT NULL
+    date_created df.df_timestamp NOT NULL,
+    page_meta df.df_string_large,
+    page_title df.df_string_large
 );
 
-CREATE TABLE doc_document_last_edit (
+CREATE TABLE doc_document_last_edits (
     document_id df.df_id NOT NULL,
-    last_edit_id df.df_id NOT NULL,
-    lang_id df.df_id NOT NULL,
-    title df.df_string_large NOT NULL
+    language_id df.df_tinyint_id NOT NULL,
+    last_edit_id df.df_id NOT NULL
 );
 
 CREATE TABLE doc_documents (
-    id df.df_id NOT NULL,
-    name df.df_string_short NOT NULL,
-    published df.df_boolean NOT NULL
+    document_id df.df_id NOT NULL,
+    code df.df_string_short NOT NULL,
+    is_published df.df_boolean NOT NULL,
+    date_created df.df_timestamp NOT NULL,
+    is_deleted df.df_boolean NOT NULL
 );
-ALTER TABLE ONLY doc_documents ALTER COLUMN name SET STATISTICS 0;
-ALTER TABLE ONLY doc_documents ALTER COLUMN published SET STATISTICS 0;
 
-CREATE TABLE doc_lang (
-    id df.df_id NOT NULL,
-    code character varying(3) NOT NULL
+CREATE TABLE doc_languages (
+    language_id df.df_tinyint_id NOT NULL,
+    code doc_language_code NOT NULL,
+    title df.df_string_short NOT NULL,
+    lno df.df_tinyint NOT NULL
 );
 
 ALTER TABLE ONLY doc_document_edits
-    ADD CONSTRAINT pk_doc_document_edits PRIMARY KEY (document_id, lang_id, edit_id);
+    ADD CONSTRAINT pk_doc_document_edits PRIMARY KEY (document_id, language_id, edit_id);
 
 ALTER TABLE ONLY doc_documents
-    ADD CONSTRAINT pk_doc_documents PRIMARY KEY (id);
+    ADD CONSTRAINT pk_doc_documents PRIMARY KEY (document_id);
 
-ALTER TABLE ONLY doc_lang
-    ADD CONSTRAINT pk_doc_lang PRIMARY KEY (id);
+ALTER TABLE ONLY doc_languages
+    ADD CONSTRAINT pk_doc_languages PRIMARY KEY (language_id);
 
-ALTER TABLE ONLY doc_document_last_edit
-    ADD CONSTRAINT pk_document_last_edit PRIMARY KEY (document_id, lang_id);
+ALTER TABLE ONLY doc_document_last_edits
+    ADD CONSTRAINT pk_document_last_edit PRIMARY KEY (document_id, language_id);
 
-ALTER TABLE ONLY doc_document_last_edit
-    ADD CONSTRAINT uq_doc_document_last_edit UNIQUE (document_id, lang_id, last_edit_id);
+ALTER TABLE ONLY doc_document_last_edits
+    ADD CONSTRAINT uq_doc_document_last_edits UNIQUE (document_id, language_id, last_edit_id);
 
 ALTER TABLE ONLY doc_documents
-    ADD CONSTRAINT uq_doc_documents UNIQUE (name);
+    ADD CONSTRAINT uq_doc_documents UNIQUE (code);
 
-ALTER TABLE ONLY doc_lang
-    ADD CONSTRAINT uq_doc_lang UNIQUE (code);
+ALTER TABLE ONLY doc_languages
+    ADD CONSTRAINT uq_doc_languages UNIQUE (code);
+
+CREATE TRIGGER t_doc_document_edits_ai
+    AFTER INSERT ON doc_document_edits
+    FOR EACH ROW
+    EXECUTE PROCEDURE t_doc_document_edits_ai();
+
+CREATE TRIGGER t_doc_document_edits_bi
+    BEFORE INSERT ON doc_document_edits
+    FOR EACH ROW
+    EXECUTE PROCEDURE t_doc_document_edits_bi();
 
 CREATE TRIGGER t_doc_documents_bi
     BEFORE INSERT ON doc_documents
     FOR EACH ROW
     EXECUTE PROCEDURE t_doc_documents_bi();
 
-CREATE TRIGGER t_document_edits_ai
-    AFTER INSERT ON doc_document_edits
-    FOR EACH ROW
-    EXECUTE PROCEDURE t_document_edits_ai();
-
-CREATE TRIGGER t_document_edits_bi
-    BEFORE INSERT ON doc_document_edits
-    FOR EACH ROW
-    EXECUTE PROCEDURE t_document_edits_bi();
+ALTER TABLE ONLY doc_document_edits
+    ADD CONSTRAINT fk_doc_document_edits__doc_documents FOREIGN KEY (document_id) REFERENCES doc_documents(document_id);
 
 ALTER TABLE ONLY doc_document_edits
-    ADD CONSTRAINT fk_doc_document_edits__doc_document_last_edit FOREIGN KEY (document_id, lang_id) REFERENCES doc_document_last_edit(document_id, lang_id);
+    ADD CONSTRAINT fk_doc_document_edits__doc_languages FOREIGN KEY (language_id) REFERENCES doc_languages(language_id);
 
-ALTER TABLE ONLY doc_document_edits
-    ADD CONSTRAINT fk_doc_document_edits__doc_lang FOREIGN KEY (lang_id) REFERENCES doc_lang(id);
-
-ALTER TABLE ONLY doc_document_last_edit
-    ADD CONSTRAINT fk_doc_document_last_edit__doc_document_edits FOREIGN KEY (document_id, lang_id, last_edit_id) REFERENCES doc_document_edits(document_id, lang_id, edit_id) DEFERRABLE INITIALLY DEFERRED;
-
-ALTER TABLE ONLY doc_document_last_edit
-    ADD CONSTRAINT fk_doc_document_last_edit__doc_documents FOREIGN KEY (document_id) REFERENCES doc_documents(id);
+ALTER TABLE ONLY doc_document_last_edits
+    ADD CONSTRAINT fk_doc_document_last_edit__doc_document_edits FOREIGN KEY (document_id, language_id, last_edit_id) REFERENCES doc_document_edits(document_id, language_id, edit_id) DEFERRABLE INITIALLY DEFERRED;
