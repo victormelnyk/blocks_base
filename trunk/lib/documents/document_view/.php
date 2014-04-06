@@ -13,8 +13,7 @@ class cBlocksBase_Documents_DocumentView extends cBlocks_DbView_View
       $lContent = $this->stringTagsProcess($lRecord['content'], array());
 
       if (isset($lRecord['page_title']))
-        $this->page->title .= ($this->page->title ? ' ' : '').
-          $lRecord['page_title'];
+        $this->page->title = $lRecord['page_title'];
       if (isset($lRecord['page_meta']))
         $this->page->meta .= '<meta name="description" content="'.
           $lRecord['page_meta'].'">';

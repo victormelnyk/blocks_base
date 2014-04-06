@@ -9,7 +9,7 @@
         SqlTemplate="D.code = :code"
         DefaultValue=""
       />
-      <l
+      <language_code
         OptionType="Equal"
         Title="LanguageCode"
         Type="String"
