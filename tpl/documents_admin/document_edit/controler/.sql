@@ -2,7 +2,7 @@ SELECT
   D.document_id,
   L.language_id,
   L.code language_code,
-  D.name document_name,
+  D.code document_code,
   DE.content,
   DE.page_title,
   DE.page_meta,

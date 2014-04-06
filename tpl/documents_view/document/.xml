@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page>
+  <Blocks>
+    <document_controler
+      Component="blocks.db_view.controler"
+    />
+    <document
+      Component="blocks_base.documents.document_view"
+      Parent="document_controler"
+    />
+  </Blocks>
+</Page>

@@ -20,7 +20,7 @@ class cBlocksBase_Documents_DocumentEdit extends cBlocks_EditForm_DbForm
     $lDb->beginTran();
     try
     {
-      $lNewSqlParams['name']         = $lSqlParams['document_name'];
+      $lNewSqlParams['code']         = $lSqlParams['document_code'];
       $lNewSqlParams['is_published'] = $lSqlParams['is_published'];
       $lNewSqlParams['is_deleted']   = $lSqlParams['is_deleted'];
 
