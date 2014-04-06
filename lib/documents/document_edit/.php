@@ -44,8 +44,11 @@ class cBlocksBase_Documents_DocumentEdit extends cBlocks_EditForm_DbForm
       $lNewSqlParams['document_id'] = $lDocumentID;
       $lNewSqlParams['language_id'] = $lSqlParams['language_id'];
       $lNewSqlParams['content']     = $lSqlParams['content'];
-      $lNewSqlParams['page_title']  = $lSqlParams['page_title'];
-      $lNewSqlParams['page_meta']   = $lSqlParams['page_meta'];
+
+      if (isset($lSqlParams['page_title']))
+        $lNewSqlParams['page_title'] = $lSqlParams['page_title'];
+      if (isset($lSqlParams['page_meta']))
+      $lNewSqlParams['page_meta'] = $lSqlParams['page_meta'];
 
       $lSql = $lDb->sqlInsertBuild('doc.doc_document_edits', $lNewSqlParams);
       $lDb->execute($lSql, $lNewSqlParams);
