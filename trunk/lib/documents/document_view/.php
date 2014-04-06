@@ -10,7 +10,7 @@ class cBlocksBase_Documents_DocumentView extends cBlocks_DbView_View
     if (count($this->owner->recordset))
     {
       $lRecord = $this->owner->recordset[0];
-      $lContent = $lRecord['content'];
+      $lContent = $this->stringTagsProcess($lRecord['content'], array());
 
       if (isset($lRecord['page_title']))
         $this->page->title .= ($this->page->title ? ' ' : '').
