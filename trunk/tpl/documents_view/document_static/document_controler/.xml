@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Block>
+  <Settings>
+    <Filter>
+      <code
+        _b-DefaultValue-IsReadOnly="true"
+      />
+    </Filter>
+  </Settings>
+</Block>
