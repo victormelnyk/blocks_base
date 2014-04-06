@@ -23,11 +23,11 @@
           ORDER BY L.language_id
         ]]></PosibleValuesSql>
       </language_id>
-      <document_name
-        Title="Document Name"
+      <document_code
+        Title="Document Code"
         Type="String"
         IsRequired="true"
-        SqlField="document_name"
+        SqlField="document_code"
       />
       <content
         Title="Content"

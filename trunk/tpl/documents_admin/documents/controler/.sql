@@ -1,7 +1,7 @@
 SELECT
   D.document_id,
   L.language_id,
-  D.name document_name,
+  D.code document_code,
   L.code language_code,
   '' state,
   DE.page_title,
