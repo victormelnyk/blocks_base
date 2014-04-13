@@ -31,7 +31,8 @@ class cBlocksBase_Images_ImageEdit extends cBlocks_EditForm_DbForm
 
     eAssert(isset($_FILES[$lFileOption->name]), 'No info about loaded Image');//!!file
     $lImage = $_FILES[$lFileOption->name];
-    eAssert($lImage['error'] == 0, 'Error loading Image');
+    eAssert($lImage['error'] == 0, 'Error loading Image code: "'.$lImage['error'].'"');
+    forceDir($lFileFlp, true);
     move_uploaded_file($lImage['tmp_name'], $lFileFlp);
 
     for ($i = 0, $l = count($this->fileEdits); $i < $l; $i++)
