@@ -50,6 +50,17 @@
 <?
     }
     else
+    if ($lInputType == INPUT_TYPE_CODE)
+    {
+?>
+      <textarea id="<?p($lName)?>" class="form-control"
+        <?if ($lIsKey) p('readonly')?>
+        name="<?p($lName)?>"
+        placeholder="<?p($lTitle)?>"
+      ><?p(htmlspecialchars($lValue))?></textarea>
+<?
+    }
+    else
     {
       if ($lInputType == INPUT_TYPE_CHECKBOX)
       {
