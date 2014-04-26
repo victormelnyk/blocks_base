@@ -39,13 +39,13 @@
       <page_title
         Title="PageTitle"
         Type="String"
-        InputType="code"
+        InputType="textarea"
         SqlField="page_title"
       />
       <page_meta
         Title="PageMeta"
         Type="String"
-        InputType="code"
+        InputType="textarea"
         SqlField="page_meta"
       />
       <is_published
