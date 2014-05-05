@@ -19,7 +19,7 @@ BEGIN
   DELETE FROM doc.doc_document_last_edits;
   DELETE FROM doc.doc_document_edits;
   DELETE FROM doc.doc_documents;
-  --DELETE FROM doc.doc_languages;
+  DELETE FROM doc.doc_languages;
 END;
 $$;
 
@@ -50,6 +50,42 @@ BEGIN
       ORDER BY L.lno
     ) D
     LIMIT 1);
+END;
+$$;
+
+CREATE FUNCTION fn_doc_pack() RETURNS void
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  lrecord record;
+BEGIN
+  DELETE FROM doc.doc_document_edits DE
+  WHERE NOT EXISTS(
+    SELECT *
+    FROM doc.doc_document_last_edits DLE
+    WHERE DLE.document_id  = DE.document_id
+      AND DLE.language_id  = DE.language_id
+      AND DLE.last_edit_id = DE.edit_id
+  );
+
+  UPDATE doc.doc_document_edits
+  SET edit_id = 1
+  WHERE edit_id <> 1;
+
+  FOR lrecord IN
+    SELECT
+      D.document_id,
+      ( SELECT COUNT(*)
+        FROM doc.doc_documents _D
+        WHERE _D.document_id <= D.document_id
+      ) count
+    FROM doc.doc_documents D
+    ORDER BY D.document_id
+  LOOP
+    UPDATE doc.doc_documents
+    SET document_id = lrecord.count
+    WHERE document_id = lrecord.document_id;
+  END LOOP;
 END;
 $$;
 
@@ -97,9 +133,7 @@ CREATE FUNCTION t_doc_documents_bi() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 BEGIN
-  SELECT COALESCE(MAX(document_id) + 1, 1)
-  INTO NEW.document_id
-  FROM doc.doc_documents;
+  NEW.document_id = df.fn_df_next_pk_value_get(TG_TABLE_SCHEMA, TG_TABLE_NAME);
 
   IF NEW.is_published IS NULL THEN
     NEW.is_published = FALSE;
@@ -184,10 +218,10 @@ CREATE TRIGGER t_doc_documents_bi
     EXECUTE PROCEDURE t_doc_documents_bi();
 
 ALTER TABLE ONLY doc_document_edits
-    ADD CONSTRAINT fk_doc_document_edits__doc_documents FOREIGN KEY (document_id) REFERENCES doc_documents(document_id);
+    ADD CONSTRAINT fk_doc_document_edits__doc_documents FOREIGN KEY (document_id) REFERENCES doc_documents(document_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE ONLY doc_document_edits
     ADD CONSTRAINT fk_doc_document_edits__doc_languages FOREIGN KEY (language_id) REFERENCES doc_languages(language_id);
 
 ALTER TABLE ONLY doc_document_last_edits
-    ADD CONSTRAINT fk_doc_document_last_edit__doc_document_edits FOREIGN KEY (document_id, language_id, last_edit_id) REFERENCES doc_document_edits(document_id, language_id, edit_id) DEFERRABLE INITIALLY DEFERRED;
+    ADD CONSTRAINT fk_doc_document_last_edit__doc_document_edits FOREIGN KEY (document_id, language_id, last_edit_id) REFERENCES doc_document_edits(document_id, language_id, edit_id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
