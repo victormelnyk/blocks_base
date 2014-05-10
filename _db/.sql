@@ -77,6 +77,99 @@ ALTER DOMAIN doc.doc_language_code OWNER TO b_admin;
 
 SET search_path = df, pg_catalog;
 
+CREATE FUNCTION fn_df_next_pk_value_get(atable_schema name, atable_name name) RETURNS df_id
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  lresult df.df_id;
+  lfield_name df.df_string_short;
+BEGIN
+  lfield_name = df.fn_df_pk_field_name_get(atable_schema, atable_name);
+
+  EXECUTE 'SELECT COALESCE(MAX(' || lfield_name || ') + 1, 1) FROM ' ||
+    atable_schema || '.' || atable_name
+  INTO lresult;
+
+  RETURN lresult;
+END;
+$$;
+
+ALTER FUNCTION df.fn_df_next_pk_value_get(atable_schema name, atable_name name) OWNER TO b_admin;
+
+CREATE FUNCTION fn_df_next_random_pk_value_get(atable_schema name, atable_name name) RETURNS df_id
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  lis_exist df.df_boolean;
+  lresult df.df_id;
+  lfield_name df.df_string_short;
+BEGIN
+  lfield_name = df.fn_df_pk_field_name_get(atable_schema, atable_name);
+
+  LOOP
+    lresult = df.fn_df_random_id();
+
+    EXECUTE 'SELECT EXIST(SELECT * FROM ' ||
+      atable_schema || '.' || atable_name ||
+      ' WHERE ' || lfield_name || ' = ' || lresult || ')'
+    INTO lis_exist;
+
+    IF NOT lis_exist THEN
+      EXIT;
+    END IF;
+  END LOOP;
+
+  RETURN lresult;
+END;
+$$;
+
+ALTER FUNCTION df.fn_df_next_random_pk_value_get(atable_schema name, atable_name name) OWNER TO b_admin;
+
+CREATE FUNCTION fn_df_pk_field_name_get(atable_schema name, atable_name name) RETURNS df_string_short
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  lresult df.df_string_short;
+BEGIN
+  SELECT KCU.column_name
+  INTO lresult
+  FROM information_schema.table_constraints TC
+    INNER JOIN information_schema.key_column_usage KCU
+      ON  KCU.table_catalog   = TC.table_catalog
+      AND KCU.table_schema    = TC.table_schema
+      AND KCU.table_name      = TC.table_name
+      AND KCU.constraint_name = TC.constraint_name
+  WHERE TC.table_catalog   = current_catalog
+    AND TC.table_schema    = atable_schema
+    AND TC.table_name      = atable_name
+    AND TC.constraint_type = 'PRIMARY KEY';
+
+  RETURN lresult;
+END;
+$$;
+
+ALTER FUNCTION df.fn_df_pk_field_name_get(atable_schema name, atable_name name) OWNER TO b_admin;
+
+CREATE FUNCTION fn_df_random_i() RETURNS df_integer
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  RETURN TRUNC(RANDOM() * 2^32) - 2^31;
+END;
+$$;
+
+ALTER FUNCTION df.fn_df_random_i() OWNER TO b_admin;
+
+CREATE FUNCTION fn_df_random_id() RETURNS df_id
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  RETURN 1 + TRUNC(RANDOM() * (2^31 - 1));
+END;
+$$;
+
+ALTER FUNCTION df.fn_df_random_id() OWNER TO b_admin;
+
 CREATE FUNCTION fn_df_timestamp_to_str(avalue df_timestamp) RETURNS df_string_short
     LANGUAGE plpgsql
     AS $$
@@ -106,7 +199,7 @@ BEGIN
   DELETE FROM doc.doc_document_last_edits;
   DELETE FROM doc.doc_document_edits;
   DELETE FROM doc.doc_documents;
-  --DELETE FROM doc.doc_languages;
+  DELETE FROM doc.doc_languages;
 END;
 $$;
 
@@ -143,6 +236,44 @@ END;
 $$;
 
 ALTER FUNCTION doc.fn_doc_language_id_get(adocument_code df.df_string_short, alanguage_code doc_language_code) OWNER TO b_admin;
+
+CREATE FUNCTION fn_doc_pack() RETURNS void
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  lrecord record;
+BEGIN
+  DELETE FROM doc.doc_document_edits DE
+  WHERE NOT EXISTS(
+    SELECT *
+    FROM doc.doc_document_last_edits DLE
+    WHERE DLE.document_id  = DE.document_id
+      AND DLE.language_id  = DE.language_id
+      AND DLE.last_edit_id = DE.edit_id
+  );
+
+  UPDATE doc.doc_document_edits
+  SET edit_id = 1
+  WHERE edit_id <> 1;
+
+  FOR lrecord IN
+    SELECT
+      D.document_id,
+      ( SELECT COUNT(*)
+        FROM doc.doc_documents _D
+        WHERE _D.document_id <= D.document_id
+      ) count
+    FROM doc.doc_documents D
+    ORDER BY D.document_id
+  LOOP
+    UPDATE doc.doc_documents
+    SET document_id = lrecord.count
+    WHERE document_id = lrecord.document_id;
+  END LOOP;
+END;
+$$;
+
+ALTER FUNCTION doc.fn_doc_pack() OWNER TO b_admin;
 
 CREATE FUNCTION t_doc_document_edits_ai() RETURNS trigger
     LANGUAGE plpgsql
@@ -192,9 +323,7 @@ CREATE FUNCTION t_doc_documents_bi() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 BEGIN
-  SELECT COALESCE(MAX(document_id) + 1, 1)
-  INTO NEW.document_id
-  FROM doc.doc_documents;
+  NEW.document_id = df.fn_df_next_pk_value_get(TG_TABLE_SCHEMA, TG_TABLE_NAME);
 
   IF NEW.is_published IS NULL THEN
     NEW.is_published = FALSE;
@@ -289,10 +418,10 @@ CREATE TRIGGER t_doc_documents_bi
     EXECUTE PROCEDURE t_doc_documents_bi();
 
 ALTER TABLE ONLY doc_document_edits
-    ADD CONSTRAINT fk_doc_document_edits__doc_documents FOREIGN KEY (document_id) REFERENCES doc_documents(document_id);
+    ADD CONSTRAINT fk_doc_document_edits__doc_documents FOREIGN KEY (document_id) REFERENCES doc_documents(document_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE ONLY doc_document_edits
     ADD CONSTRAINT fk_doc_document_edits__doc_languages FOREIGN KEY (language_id) REFERENCES doc_languages(language_id);
 
 ALTER TABLE ONLY doc_document_last_edits
-    ADD CONSTRAINT fk_doc_document_last_edit__doc_document_edits FOREIGN KEY (document_id, language_id, last_edit_id) REFERENCES doc_document_edits(document_id, language_id, edit_id) DEFERRABLE INITIALLY DEFERRED;
+    ADD CONSTRAINT fk_doc_document_last_edit__doc_document_edits FOREIGN KEY (document_id, language_id, last_edit_id) REFERENCES doc_document_edits(document_id, language_id, edit_id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
