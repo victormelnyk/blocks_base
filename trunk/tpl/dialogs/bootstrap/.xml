@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page>
+  <Blocks>
+    <dialog
+      Component="blocks.sys.name_list"
+      Parent=""
+    />
+    <dialog_title
+      Component="blocks.sys.static"
+      Parent="dialog"
+    />
+    <dialog_content
+      Component="blocks.sys.static"
+      Parent="dialog"
+    />
+    <dialog_buttons
+      Component="blocks.sys.static"
+      Parent="dialog"
+    />
+  </Blocks>
+</Page>
