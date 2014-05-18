@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Block IsCache="true">
+  <Scripts>
+    <_i-Script>s:web/comp/loggers/hint.js</_i-Script>
+  </Scripts>
+  <InitScripts>
+    <InitScript><![CDATA[
+      page.logger = new page.cLoggerHint('logger', {
+        information: 'alert-success',
+        warning: 'alert-warning',
+        error: 'alert-danger'
+      });
+    ]]></InitScript>
+  </InitScripts>
+</Block>
