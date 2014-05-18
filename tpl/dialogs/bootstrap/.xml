@@ -9,7 +9,7 @@
       Component="blocks.sys.static"
       Parent="dialog"
     />
-    <dialog_content
+    <dialog_body
       Component="blocks.sys.static"
       Parent="dialog"
     />
