@@ -2,7 +2,7 @@
 <Page>
   <Blocks>
     <dialog
-      Component="blocks.sys.name_list"
+      Component="blocks.sys.named_list"
       Parent=""
     />
     <dialog_title
