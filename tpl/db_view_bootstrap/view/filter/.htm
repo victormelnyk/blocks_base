@@ -21,6 +21,8 @@
     $lInputType  = $lOption['inputType'];
     $lName       = $lOption['name'];
     $lOptionType = $lOption['optionType'];
+    $lValue      = $lOption['value'];
+
 ?>
           <div class="form-group">
             <label class="col-sm-4 control-label" for="<?p($lName)?>"><?p($lOption['title'])?></label>
@@ -29,10 +31,12 @@
     switch ($lInputType) {
       case INPUT_TYPE_CHECKBOX:
 ?>
-          <input id="<?p($lName)?>" class="form-control"
-            type="<?p($lInputType)?>"
-            name="<?p($lName)?>" value="true"<?p($lOption['value'] ? ' checked' : '')?>
-            placeholder="<?p($lOption['title'])?>">
+
+          <select id="<?p($lName)?>" class="form-control" name="<?p($lName)?>">
+            <option value="" <?if ($lValue === null) p(' selected')?>></option>
+            <option value="true" <?if ($lValue === true) p(' selected')?>>Yes</option>
+            <option value="false" <?if ($lValue === false) p(' selected')?>>No</option>
+          </select>
 <?
         break;
       case INPUT_TYPE_DATE:
@@ -40,7 +44,7 @@
           case cFilter::FILTER_OPTION_TYPE_EQUAL:
 ?>
               <input id="<?p($lName)?>" class="form-control" type="text"
-                name="<?p($lName)?>" value="<?p($lOption['value'])?>"
+                name="<?p($lName)?>" value="<?p($lValue)?>"
                 placeholder="<?p($lOption['title'])?>" class="datepicker">
               <script type="text/javascript">
 $(function() {
@@ -81,7 +85,7 @@ $(function() {
       case INPUT_TYPE_DATETIME:
 ?>
               <input id="<?p($lName)?>" class="form-control" type="text"
-                name="<?p($lName)?>" value="<?p($lOption['value'])?>"
+                name="<?p($lName)?>" value="<?p($lValue)?>"
                 placeholder="<?p($lOption['title'])?>">
 <?
         break;
@@ -108,7 +112,7 @@ $(function() {
       case INPUT_TYPE_TIME:
 ?>
               <input id="<?p($lName)?>" class="form-control" type="text"
-                name="<?p($lName)?>" value="<?p($lOption['value'])?>"
+                name="<?p($lName)?>" value="<?p($lValue)?>"
                 placeholder="<?p($lOption['title'])?>">
 <?
         break;
@@ -116,7 +120,7 @@ $(function() {
 ?>
               <input id="<?p($lName)?>" class="form-control"
                 type="<?p($lInputType)?>"
-                name="<?p($lName)?>" value="<?p($lOption['value'])?>"
+                name="<?p($lName)?>" value="<?p($lValue)?>"
                 placeholder="<?p($lOption['title'])?>">
 <?
     }

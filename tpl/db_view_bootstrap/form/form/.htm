@@ -61,23 +61,31 @@
 <?
     }
     else
+    if ($lInputType == INPUT_TYPE_CHECKBOX)
     {
-      if ($lInputType == INPUT_TYPE_CHECKBOX)
+?>
+      <select id="<?p($lName)?>" class="form-control" name="<?p($lName)?>">
+<?
+      if (!$lIsRequired)
       {
-        $lChecked = $lValue ? ' checked' : '';
-        $lValue = 'true';
-        $lClass = '';
+?>
+        <option value=""></option>
+<?
       }
-      else
-      {
-        $lChecked = '';
-        $lValue = $lOption['isValueExist'] ? $lOption['value'] : '';
+?>
+        <option value="true" <?if ($lValue) p(' selected')?>>Yes</option>
+        <option value="false" <?if (!$lValue) p(' selected')?>>No</option>
+      </select>
+<?
+    }
+    else
+    {
+      $lValue = $lOption['isValueExist'] ? $lOption['value'] : '';
 
-        if ($lInputType == INPUT_TYPE_FILE)
-          $lClass = '';
-        else
-          $lClass = ' class="form-control"';
-      }
+      if ($lInputType == INPUT_TYPE_FILE)
+        $lClass = '';
+      else
+        $lClass = ' class="form-control"';
 ?>
       <input id="<?p($lName)?>"
         <?p($lClass)?>
@@ -86,7 +94,6 @@
         name="<?p($lName)?>"
         value="<?p($lValue)?>"
         placeholder="<?p($lTitle)?>"
-        <?p($lChecked)?>
       >
 <?
     }

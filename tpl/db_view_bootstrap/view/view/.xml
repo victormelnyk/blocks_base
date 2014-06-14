@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Block>
+  <Inherited/>
   <Localization/>
   <Styles>
     <_i-Style>b:web/view_table.css</_i-Style>
