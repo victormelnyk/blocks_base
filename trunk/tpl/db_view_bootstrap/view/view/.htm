@@ -1,5 +1,6 @@
 <?
-cBootstrapTableHelper::recordsetAddEditButtons($recordset, $params,
-  $urlParams, true);
+if (isset($params['EditPageUrl']))
+  cBootstrapTableHelper::recordsetAddEditButtons($recordset, $params,
+    $urlParams, true);
 p(cBootstrapTableHelper::gridBuild($recordset, $params));
 ?>
