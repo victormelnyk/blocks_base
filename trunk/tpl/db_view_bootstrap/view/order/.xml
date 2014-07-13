@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Block>
+  <Localization>
+    <Tags>
+      <Order>
+        <en>Order</en>
+        <uk>Порядок</uk>
+        <ru>Порядок</ru>
+      </Order>
+    </Tags>
+  </Localization>
+  <Tags>
+    <MainClass>pull-right</MainClass>
+  </Tags>
+</Block>

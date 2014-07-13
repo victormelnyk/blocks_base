@@ -10,19 +10,19 @@
 
     switch ($lItem['navigatorItemType']) {
     case cPageNavigatorHelper::NIT_FIRST:
-      $lTitle = 'First';
+      $lTitle = '&laquo;';
       break;
     case cPageNavigatorHelper::NIT_PREV:
-      $lTitle = 'Prev';
+      $lTitle = '&lsaquo;';
       break;
     case cPageNavigatorHelper::NIT_PAGE:
       $lTitle = $lItem['pageNo'];
       break;
     case cPageNavigatorHelper::NIT_NEXT:
-      $lTitle = 'Next';
+      $lTitle = '&rsaquo;';
       break;
     case cPageNavigatorHelper::NIT_LAST:
-      $lTitle = 'Last';
+      $lTitle = '&raquo;';
       break;
     default:
       throw new Exception('Not supported NavigatorItemType: "'.
