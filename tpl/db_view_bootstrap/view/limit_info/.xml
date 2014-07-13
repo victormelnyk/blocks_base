@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Block>
+  <Localization>
+    <Tags>
+      <Showing>
+        <en>Showing</en>
+        <uk>Показано</uk>
+        <ru>Показано</ru>
+      </Showing>
+      <Of>
+        <uk>з</uk>
+        <ru>с</ru>
+        <en>of</en>
+      </Of>
+    </Tags>
+  </Localization>
+</Block>
