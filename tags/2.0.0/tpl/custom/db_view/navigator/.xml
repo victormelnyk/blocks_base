@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Block>
+  <Localization>
+    <Tags>
+      <FirstValue>
+        <en>«« First</en>
+        <uk>«« Перша</uk>
+        <ru>«« Первая</ru>
+      </FirstValue>
+      <FirstTitle>
+        <en>First</en>
+        <uk>Перша</uk>
+        <ru>Первая</ru>
+      </FirstTitle>
+      <PrevValue>
+        <en>« Prev</en>
+        <uk>« Попередня</uk>
+        <ru>« Предыдущая</ru>
+      </PrevValue>
+      <PrevTitle>
+        <en>Prev</en>
+        <uk>Попередня</uk>
+        <ru>Предыдущая</ru>
+      </PrevTitle>
+      <NextValue>
+        <en>Next »</en>
+        <uk>Наступна »</uk>
+        <ru>Следущая »</ru>
+      </NextValue>
+      <NextTitle>
+        <en>Next</en>
+        <uk>Наступна</uk>
+        <ru>Следущая</ru>
+      </NextTitle>
+      <LastValue>
+        <en>Last »»</en>
+        <uk>Остання »»</uk>
+        <ru>Последняя »»</ru>
+      </LastValue>
+      <LastTitle>
+        <en>Last</en>
+        <uk>Остання</uk>
+        <ru>Последняя</ru>
+      </LastTitle>
+    </Tags>
+  </Localization>
+</Block>

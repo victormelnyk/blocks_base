@@ -1,0 +1,42 @@
+<ul class="pagination pull-right navigator">
+<?
+  $lItems = cPageNavigatorHelper::navigatorCalculate($recordCount,
+    $currentOptionValue, $pageNo, $pageNoParamName, $paramName,
+    $currentOptionName, $urlParams, 2);
+
+  for ($i = 0, $l = count($lItems); $i < $l; $i++)
+  {
+    $lItem = $lItems[$i];
+
+    switch ($lItem['navigatorItemType']) {
+    case cPageNavigatorHelper::NIT_FIRST:
+      $lTitle = '&laquo;';
+      break;
+    case cPageNavigatorHelper::NIT_PREV:
+      $lTitle = '&lsaquo;';
+      break;
+    case cPageNavigatorHelper::NIT_PAGE:
+      $lTitle = $lItem['pageNo'];
+      break;
+    case cPageNavigatorHelper::NIT_NEXT:
+      $lTitle = '&rsaquo;';
+      break;
+    case cPageNavigatorHelper::NIT_LAST:
+      $lTitle = '&raquo;';
+      break;
+    default:
+      throw new Exception('Not supported NavigatorItemType: "'.
+        $lItem['navigatorItemType'].'"');
+    }
+
+    if ($lItem['isActive'])
+      $lClasses = $lItem['navigatorItemType'] == cPageNavigatorHelper::NIT_PAGE
+        ? 'active' : 'disabled';
+    else
+      $lClasses = '';
+
+    p('<li'.($lClasses ? ' class="'.$lClasses.'"' : '').
+      '><a href="?'.$lItem['urlParams'].'">'.$lTitle.'</a></li>');
+  }
+?>
+</ul>

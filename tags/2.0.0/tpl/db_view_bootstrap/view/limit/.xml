@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Block>
+  <Localization>
+    <Tags>
+      <Records>
+        <en>Records</en>
+        <uk>Рядків</uk>
+        <ru>Строк</ru>
+      </Records>
+    </Tags>
+  </Localization>
+  <Tags>
+    <MainClass>pull-right</MainClass>
+  </Tags>
+</Block>

@@ -1,0 +1,19 @@
+<?
+cBootstrapTableHelper::recordsetAddEditButtons($recordset, $params,
+  $urlParams, false);
+
+for ($i = 0, $l = count($recordset); $i < $l; $i++)
+{
+  $recordset[$i]['state'] =
+    cBootstrapTableHelper::stateCheckBoxBuild($recordset[$i]['is_published'], 'IsPublished').
+    cBootstrapTableHelper::stateCheckBoxBuild($recordset[$i]['is_deleted'], 'IsDeleted');
+  unset($recordset[$i]['language_id']);
+  unset($recordset[$i]['is_published']);
+  unset($recordset[$i]['is_deleted']);
+}
+
+p(cBootstrapTableHelper::gridBuild($recordset, $params,
+  array('DocID', 'Code', 'Lang', 'State', 'PageTitle', 'Date Edit', 'Edit'),
+  array('50px', '80px', '50px', '50px', '', '130px', '54px')
+));
+?>

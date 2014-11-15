@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page>
+  <Blocks>
+    <controler
+      Component="blocks.db_view.controler_grid"
+      Parent=""
+    />
+    <view
+      Component="blocks.db_view.view"
+      Parent="controler"
+    />
+    <navigator
+      Component="blocks.db_view.limit"
+      Parent="controler"
+    />
+    <order
+      Component="blocks.db_view.order"
+      Parent="controler"
+    />
+    <limit
+      Component="blocks.db_view.limit"
+      Parent="controler"
+    />
+  </Blocks>
+</Page>

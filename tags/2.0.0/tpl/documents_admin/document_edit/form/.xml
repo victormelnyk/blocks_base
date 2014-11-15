@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Block>
+  <Settings>
+    <Form TableName="doc.doc_documents">
+      <document_id
+        Title="Document ID"
+        Type="Integer"
+        IsRequired="true"
+        DefaultValue="0"
+        SqlField="document_id"
+        IsKey="true"
+      />
+      <language_id
+        Title="Language"
+        Type="Integer"
+        InputType="select"
+        IsRequired="true"
+        SqlField="language_id"
+      >
+        <PosibleValuesSql><![CDATA[
+          SELECT L.language_id AS id, L.title || '(' || L.code || ')' AS value
+          FROM doc.doc_languages L
+          ORDER BY L.language_id
+        ]]></PosibleValuesSql>
+      </language_id>
+      <document_code
+        Title="Document Code"
+        Type="String"
+        IsRequired="true"
+        SqlField="document_code"
+      />
+      <content
+        Title="Content"
+        Type="String"
+        InputType="code"
+        IsRequired="true"
+        SqlField="content"
+      />
+      <page_title
+        Title="PageTitle"
+        Type="String"
+        InputType="textarea"
+        SqlField="page_title"
+      />
+      <page_meta
+        Title="PageMeta"
+        Type="String"
+        InputType="textarea"
+        SqlField="page_meta"
+      />
+      <is_published
+        Title="IsPublished"
+        Type="Boolean"
+        SqlField="is_published"
+      />
+      <is_deleted
+        Title="IsDeleted"
+        Type="Boolean"
+        SqlField="is_deleted"
+      />
+    </Form>
+  </Settings>
+</Block>

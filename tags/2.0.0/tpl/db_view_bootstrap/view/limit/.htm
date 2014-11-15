@@ -1,0 +1,16 @@
+<div class="dropdown <~Tag|MainClass~>">
+  <input type="hidden" name="<?p($paramName)?>" value="<?p($currentOptionName)?>">
+  <button class="btn dropdown-toggle btn-sm" type="button" data-toggle="dropdown" title="<~ml|Records~>">
+    <?p($currentOptionTitle)?>
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+<?
+  for ($i = 0, $l = count($options); $i < $l; $i++)
+    p('<li '.($options[$i]['isActive'] ? 'class="disabled"' : '').
+      '><a tabindex="-1" href="?'.$urlParams.($urlParams ? '&' : '').
+      $paramName.'='.$options[$i]['name'].'">'.$options[$i]['title'].
+      '</a></li>');
+?>
+  </ul>
+</div>

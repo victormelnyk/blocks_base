@@ -1,0 +1,141 @@
+<button class="btn btn-warning btn-sm" type="button" style="width: 58px;" data-toggle="modal" data-target="#filter">Filter</button>
+
+<div class="modal fade" id="filter">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Filter</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+
+<?
+  for ($i = 0, $l = count($options); $i < $l; $i++)
+  {
+    $lOption = $options[$i];
+
+    if ($lOption['isReadOnly'])
+      continue;
+
+    $lInputType  = $lOption['inputType'];
+    $lName       = $lOption['name'];
+    $lOptionType = $lOption['optionType'];
+    $lValue      = $lOption['value'];
+
+?>
+          <div class="form-group">
+            <label class="col-sm-4 control-label" for="<?p($lName)?>"><?p($lOption['title'])?></label>
+            <div class="col-sm-8">
+<?
+    switch ($lInputType) {
+      case INPUT_TYPE_CHECKBOX:
+?>
+
+          <select id="<?p($lName)?>" class="form-control" name="<?p($lName)?>">
+            <option value="" <?if ($lValue === null) p(' selected')?>></option>
+            <option value="true" <?if ($lValue === true) p(' selected')?>>Yes</option>
+            <option value="false" <?if ($lValue === false) p(' selected')?>>No</option>
+          </select>
+<?
+        break;
+      case INPUT_TYPE_DATE:
+        switch ($lOptionType) {
+          case cFilter::FILTER_OPTION_TYPE_EQUAL:
+?>
+              <input id="<?p($lName)?>" class="form-control" type="text"
+                name="<?p($lName)?>" value="<?p($lValue)?>"
+                placeholder="<?p($lOption['title'])?>" class="datepicker">
+              <script type="text/javascript">
+$(function() {
+  $('#<?p($lName)?>').datepicker({
+    format: 'yyyy-mm-dd',
+    autoclose: true
+  });
+});
+              </script>
+<?
+            break;
+          case cFilter::FILTER_OPTION_TYPE_RANGE:
+?>
+              <input id="<?p($lName)?>_from" class="form-control" type="text"
+                name="<?p($lName)?>_from" value="<?p($lOption['valueFrom'])?>"
+                placeholder="<?p($lOption['title'])?>" class="datepicker">
+              <input id="<?p($lName)?>_to" class="form-control" type="text"
+                name="<?p($lName)?>_to" value="<?p($lOption['valueTo'])?>"
+                placeholder="<?p($lOption['title'])?>" class="datepicker">
+              <script type="text/javascript">
+$(function() {
+  $('#<?p($lName)?>_from').datepicker({
+    format: 'yyyy-mm-dd',
+    autoclose: true
+  });
+  $('#<?p($lName)?>_to').datepicker({
+    format: 'yyyy-mm-dd',
+    autoclose: true
+  });
+});
+              </script>
+<?
+            break;
+          default:
+            eAssert(false);
+        }
+        break;
+      case INPUT_TYPE_DATETIME:
+?>
+              <input id="<?p($lName)?>" class="form-control" type="text"
+                name="<?p($lName)?>" value="<?p($lValue)?>"
+                placeholder="<?p($lOption['title'])?>">
+<?
+        break;
+      case INPUT_TYPE_SELECT:
+?>
+              <select id="<?p($lName)?>" class="form-control"
+                name="<?p($lName)?>">
+<?
+        $lPosibleValues = $lOption['posibleValues'];
+        for ($j = 0, $lPosibleValueCount = count($lPosibleValues); $j < $lPosibleValueCount; $j++)
+        {
+          $lPosibleValue = $lPosibleValues[$j];
+?>
+                <option value="<?p($lPosibleValue['id'])?>"
+                  <?if ($lPosibleValue['is_active']) p(' selected')?>>
+                  <?p($lPosibleValue['value'])?>
+                </option>
+<?
+        }
+?>
+              </select>
+<?
+        break;
+      case INPUT_TYPE_TIME:
+?>
+              <input id="<?p($lName)?>" class="form-control" type="text"
+                name="<?p($lName)?>" value="<?p($lValue)?>"
+                placeholder="<?p($lOption['title'])?>">
+<?
+        break;
+      default:
+?>
+              <input id="<?p($lName)?>" class="form-control"
+                type="<?p($lInputType)?>"
+                name="<?p($lName)?>" value="<?p($lValue)?>"
+                placeholder="<?p($lOption['title'])?>">
+<?
+    }
+?>
+            </div>
+          </div>
+<?
+  }
+?>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+          <button class="btn btn-primary" type="submit">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<?
+  $lFrom = ($pageNo - 1) * $currentOptionValue + 1;
+  if ($lFrom >= $recordCount)
+    $lFrom = 0;
+  $lTo = ($pageNo - 1) * $currentOptionValue + $currentOptionValue;
+  if ($lTo > $recordCount)
+    $lTo = $recordCount;
+
+p('<div class="limit_info"><~ml|Showing~> '.$lFrom.' - '.$lTo.' <~ml|Of~> '.$recordCount.'</div>');
+?>

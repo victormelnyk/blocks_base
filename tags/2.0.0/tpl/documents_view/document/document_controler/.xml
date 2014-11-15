@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Block>
+  <Settings>
+    <Filter FilterIsEmpty="empty">
+      <code
+        OptionType="Equal"
+        Title="DocumentCode"
+        Type="String"
+        SqlTemplate="D.code = :code"
+        DefaultValue=""
+      />
+      <language_code
+        OptionType="Equal"
+        Title="LanguageCode"
+        Type="String"
+        SqlTemplate="(1=1)"
+        IsReadOnly="true"
+        SessionParamName="language"
+        DefaultValue=""
+      />
+      <is_published
+        OptionType="Equal"
+        Title="IsPublished"
+        Type="Boolean"
+        SqlSource="D.is_published"
+        IsReadOnly="true"
+        DefaultValue="true"
+      />
+      <is_deleted
+        OptionType="Equal"
+        Title="IsDeleted"
+        Type="Boolean"
+        SqlSource="D.is_deleted"
+        IsReadOnly="true"
+        DefaultValue="false"
+      />
+    </Filter>
+  </Settings>
+</Block>

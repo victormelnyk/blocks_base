@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Block>
+  <Localization>
+    <Tags>
+      <SortBy>
+        <en>Sort by</en>
+        <uk>Сортувати по</uk>
+        <ru>Сортировать по</ru>
+      </SortBy>
+      <Select>
+        <en>Select</en>
+        <uk>Обрати</uk>
+        <ru>Выбрать</ru>
+      </Select>
+      <SortedBy>
+        <en>Sorted by</en>
+        <uk>Посортовано по</uk>
+        <ru>Сортировано по</ru>
+      </SortedBy>
+      <Asc>
+        <en>ascending</en>
+        <uk>зростанням</uk>
+        <ru>возростанию</ru>
+      </Asc>
+      <Desc>
+        <en>descending</en>
+        <uk>спаданням</uk>
+        <ru>убыванию</ru>
+      </Desc>
+    </Tags>
+  </Localization>
+</Block>
