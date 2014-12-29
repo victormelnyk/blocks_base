@@ -1,6 +1,6 @@
 <ul class="pagination pull-right navigator">
 <?
-  $lItems = cPageNavigatorHelper::navigatorCalculate($recordCount,
+  $lItems = PageNavigatorHelper::navigatorCalculate($recordCount,
     $currentOptionValue, $pageNo, $pageNoParamName, $paramName,
     $currentOptionName, $urlParams, 2);
 
@@ -9,19 +9,19 @@
     $lItem = $lItems[$i];
 
     switch ($lItem['navigatorItemType']) {
-    case cPageNavigatorHelper::NIT_FIRST:
+    case PageNavigatorHelper::NIT_FIRST:
       $lTitle = '&laquo;';
       break;
-    case cPageNavigatorHelper::NIT_PREV:
+    case PageNavigatorHelper::NIT_PREV:
       $lTitle = '&lsaquo;';
       break;
-    case cPageNavigatorHelper::NIT_PAGE:
+    case PageNavigatorHelper::NIT_PAGE:
       $lTitle = $lItem['pageNo'];
       break;
-    case cPageNavigatorHelper::NIT_NEXT:
+    case PageNavigatorHelper::NIT_NEXT:
       $lTitle = '&rsaquo;';
       break;
-    case cPageNavigatorHelper::NIT_LAST:
+    case PageNavigatorHelper::NIT_LAST:
       $lTitle = '&raquo;';
       break;
     default:
@@ -30,7 +30,7 @@
     }
 
     if ($lItem['isActive'])
-      $lClasses = $lItem['navigatorItemType'] == cPageNavigatorHelper::NIT_PAGE
+      $lClasses = $lItem['navigatorItemType'] == PageNavigatorHelper::NIT_PAGE
         ? 'active' : 'disabled';
     else
       $lClasses = '';

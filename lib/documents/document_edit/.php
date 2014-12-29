@@ -1,7 +1,7 @@
-<?php
-cPage::moduleAdd('blocks/lib/edit_form/db_form/.php');
+<?
+Page::addModule('blocks/lib/edit_form/db_form/.php');
 
-class cBlocksBase_Documents_DocumentEdit extends cBlocks_EditForm_DbForm
+class BlocksBase_Documents_DocumentEdit extends Blocks_EditForm_DbForm
 {
   protected function delete()
   {

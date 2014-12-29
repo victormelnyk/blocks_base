@@ -1,4 +1,4 @@
-<?php
+<?
 function recordsetPostProcess(&$aRecordset, $aControler)
 {
   $lKeys = $aControler->filter->keyOptionsAsNameSqlFieldNameArrayGet();

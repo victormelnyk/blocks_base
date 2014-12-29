@@ -2,7 +2,7 @@
   <table class="blocks_navigator" cellspacing="2" cellpadding="2">
     <tr>
 <?
-  $lItems = cPageNavigatorHelper::navigatorCalculate($recordCount,
+  $lItems = PageNavigatorHelper::navigatorCalculate($recordCount,
     $currentOptionValue, $pageNo, $pageNoParamName, $paramName,
     $currentOptionName, $urlParams, 2);
 
@@ -13,22 +13,22 @@
     $lValue = '';
     $lTitle = '';
     switch ($lItem['navigatorItemType']) {
-    case cPageNavigatorHelper::NIT_FIRST:
+    case PageNavigatorHelper::NIT_FIRST:
       $lValue = '<~ml|FirstValue~>';
       $lTitle = '<~ml|FirstTitle~>';
       break;
-    case cPageNavigatorHelper::NIT_PREV:
+    case PageNavigatorHelper::NIT_PREV:
       $lValue = '<~ml|PrevValue~>';
       $lTitle = '<~ml|PrevTitle~>';
       break;
-    case cPageNavigatorHelper::NIT_PAGE:
+    case PageNavigatorHelper::NIT_PAGE:
       $lValue = $lItem['pageNo'];
       break;
-    case cPageNavigatorHelper::NIT_NEXT:
+    case PageNavigatorHelper::NIT_NEXT:
       $lValue = '<~ml|NextValue~>';
       $lTitle = '<~ml|NextTitle~>';
       break;
-    case cPageNavigatorHelper::NIT_LAST:
+    case PageNavigatorHelper::NIT_LAST:
       $lValue = '<~ml|LastValue~>';
       $lTitle = '<~ml|LastTitle~>';
       break;
