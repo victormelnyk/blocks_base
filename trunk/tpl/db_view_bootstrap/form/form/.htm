@@ -13,6 +13,11 @@
     $lName         = $lOption['name'];
     $lTitle        = $lOption['title'];
     $lValue        = $lOption['value'];
+
+    if (($lInputType === INPUT_TYPE_DATE)
+      || ($lInputType === INPUT_TYPE_TIME)
+      || ($lInputType === INPUT_TYPE_DATETIME))
+      $lInputType = INPUT_TYPE_TEXT;
 ?>
   <div class="form-group<?if ($editMode == EDIT_MODE_SAVE) p($lIsValueValid ? ' success' : ' error')?>">
     <label class="col-sm-4 control-label" for="<?p($lName)?>">
