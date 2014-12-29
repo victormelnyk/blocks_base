@@ -5,7 +5,7 @@ class cBlocksBase_Documents_DocumentEdit extends cBlocks_EditForm_DbForm
 {
   protected function delete()
   {
-    notSupportedRaise();
+    raiseNotSupported();
   }
 
   protected function save()
@@ -36,7 +36,7 @@ class cBlocksBase_Documents_DocumentEdit extends cBlocks_EditForm_DbForm
         $lSql = $lDb->sqlInsertBuild('doc.doc_documents', $lNewSqlParams).CRLF.
           'RETURNING document_id';
         $lDb->executeValue($lSql, 'document_id', $lDocumentID, $lNewSqlParams,
-          VAR_TYPE_INTEGER);
+          V_INTEGER);
       }
 
       $lNewSqlParams = array();

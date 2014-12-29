@@ -8,7 +8,7 @@ class cBlocksBase_Images_ImageEdit extends cBlocks_EditForm_DbForm
 
   protected function delete()
   {
-    notSupportedRaise();
+    raiseNotSupported();
   }
 
   public function fileOptionGet()
@@ -65,7 +65,7 @@ class cBlocksBase_Images_ImageEdit extends cBlocks_EditForm_DbForm
         $lLastKeyOptionValue = 0;
         $lSql .= CRLF.'RETURNING '.$lLastKeyOption->name;
         $lDb->executeValue($lSql, $lLastKeyOption->name, $lLastKeyOptionValue,
-          $lSqlParams, VAR_TYPE_INTEGER);
+          $lSqlParams, V_INTEGER);
         $lLastKeyOption->valueSetDirect($lLastKeyOptionValue);
       }
 
@@ -84,17 +84,17 @@ class cBlocksBase_Images_ImageEdit extends cBlocks_EditForm_DbForm
   {
     parent::settingsRead($aXmlNode);
 
-    $lFilesNode = $aXmlNode->nodes->nextGetByN('Files');
+    $lFilesNode = $aXmlNode->nodes->getNextByN('Files');
 
     $this->originalFlpTemplate =
-      $lFilesNode->nodes->nextGetByN('OriginalFlpTemplate')->getS();
+      $lFilesNode->nodes->getNextByN('OriginalFlpTemplate')->getS();
 
-    while ($lFilesNode->nodes->nextGetCheck($lEditNode))
+    while ($lFilesNode->nodes->getCheckNext($lEditNode))
     {
       $this->fileEdits[] = array(
         'flp_template' => $lEditNode->getS(),
-        'width'        => $lEditNode->attrs->nextGetByN('Width')->getI(),
-        'height'       => $lEditNode->attrs->nextGetByN('Height')->getI(),
+        'width'        => $lEditNode->attrs->getNextByN('Width')->getI(),
+        'height'       => $lEditNode->attrs->getNextByN('Height')->getI(),
       );
     }
   }

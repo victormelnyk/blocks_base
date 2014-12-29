@@ -21,7 +21,8 @@
     $lInputType  = $lOption['inputType'];
     $lName       = $lOption['name'];
     $lOptionType = $lOption['optionType'];
-    $lValue      = $lOption['value'];
+
+    $lValue = isset($lOption['value']) ? $lOption['value'] : null;//!!
 
 ?>
           <div class="form-group">
@@ -83,11 +84,27 @@ $(function() {
         }
         break;
       case INPUT_TYPE_DATETIME:
+        switch ($lOptionType) {
+          case cFilter::FILTER_OPTION_TYPE_EQUAL:
 ?>
               <input id="<?p($lName)?>" class="form-control" type="text"
                 name="<?p($lName)?>" value="<?p($lValue)?>"
                 placeholder="<?p($lOption['title'])?>">
 <?
+            break;
+          case cFilter::FILTER_OPTION_TYPE_RANGE:
+?>
+              <input id="<?p($lName)?>_from" class="form-control" type="text"
+                name="<?p($lName)?>_from" value="<?p($lOption['valueFrom'])?>"
+                placeholder="<?p($lOption['title'])?>" class="datepicker">
+              <input id="<?p($lName)?>_to" class="form-control" type="text"
+                name="<?p($lName)?>_to" value="<?p($lOption['valueTo'])?>"
+                placeholder="<?p($lOption['title'])?>" class="datepicker">
+<?
+            break;
+          default:
+            eAssert(false);
+        }
         break;
       case INPUT_TYPE_SELECT:
 ?>
