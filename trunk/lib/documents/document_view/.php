@@ -1,7 +1,7 @@
-<?php
-cPage::moduleAdd('blocks/lib/db_view/view/.php');
+<?
+Page::addModule('blocks/lib/db_view/view/.php');
 
-class cBlocksBase_Documents_DocumentView extends cBlocks_DbView_View
+class BlocksBase_Documents_DocumentView extends Blocks_DbView_View
 {
   public function build()
   {
@@ -10,7 +10,7 @@ class cBlocksBase_Documents_DocumentView extends cBlocks_DbView_View
     if (count($this->owner->recordset))
     {
       $lRecord = $this->owner->recordset[0];
-      $lContent = $this->stringTagsProcess($lRecord['content'], array());
+      $lContent = $this->processStringTags($lRecord['content'], array());
 
       if (isset($lRecord['page_title']))
         $this->page->title = $lRecord['page_title'];
@@ -19,7 +19,7 @@ class cBlocksBase_Documents_DocumentView extends cBlocks_DbView_View
           $lRecord['page_meta'].'">';
     }
 
-    return $this->templateProcess($this->fileFirstExistDataGet('.htm'), array(
+    return $this->templateProcess($this->getFirstExistFileData('.htm'), array(
       'content' => $lContent
     ));
   }
