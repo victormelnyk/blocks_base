@@ -6,6 +6,10 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET escape_string_warning = off;
 
+CREATE SCHEMA bl;
+
+ALTER SCHEMA bl OWNER TO b_admin;
+
 CREATE SCHEMA df;
 
 ALTER SCHEMA df OWNER TO b_admin;
@@ -429,9 +433,30 @@ $$;
 
 ALTER FUNCTION doc.t_doc_documents_bi() OWNER TO b_admin;
 
+SET search_path = bl, pg_catalog;
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
+
+CREATE TABLE bl_types (
+    f_boolean df.df_boolean,
+    f_id df.df_id,
+    f_integer df.df_integer,
+    f_interval df.df_interval,
+    f_money df.df_money,
+    f_smallint df.df_smallint,
+    f_string_large df.df_string_large,
+    f_string_short df.df_string_short,
+    f_text df.df_text,
+    f_tinestamp df.df_timestamp,
+    f_tinyint df.df_tinyint,
+    f_tinyint_id df.df_tinyint_id
+);
+
+ALTER TABLE bl.bl_types OWNER TO b_admin;
+
+SET search_path = doc, pg_catalog;
 
 CREATE TABLE doc_document_edits (
     document_id df.df_id NOT NULL,
