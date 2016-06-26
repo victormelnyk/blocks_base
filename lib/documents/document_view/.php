@@ -19,7 +19,7 @@ class BlocksBase_Documents_DocumentView extends Blocks_DbView_View
           $lRecord['page_meta'].'">';
     }
 
-    return $this->templateProcess($this->getFirstExistFileData('.htm'), array(
+    return $this->processTemplate($this->getFirstExistFileData('.htm'), array(
       'content' => $lContent
     ));
   }
